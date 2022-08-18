@@ -8,7 +8,7 @@ function UserItem({ id, name, image, placeCount }) {
   return (
     <li className={styles["user-item"]}>
         <Card className={styles["user-item__content"]}>
-          <Link to={`/${id}.places`}>
+          <Link to={`/${id}/places`}>
             <div className={styles["user-item__image"]}>
               <Avatar image={image} alt={name} />
             </div>
