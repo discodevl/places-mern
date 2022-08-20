@@ -15,12 +15,24 @@ function PlaceItem({
   coordinates,
 }) {
   const [showMap, setShowMap] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   function openMapHandler() {
     setShowMap(true);
   }
   function closeMapHandler() {
     setShowMap(false);
+  }
+
+  function showDeleteWarningHandler() {
+    setShowConfirmModal(true)
+  }
+  function cancelDeleteWarningHandler() {
+    setShowConfirmModal(false)
+  }
+  function confirmDeleteHandler() {
+    setShowConfirmModal(false)
+    console.log('delete')
   }
 
   return (
@@ -30,12 +42,26 @@ function PlaceItem({
         onCancel={closeMapHandler}
         header={address}
         contentClass={styles["place-item__modal-content"]}
-        footerClass={styles['place-item__modal-actions']}
+        footerClass={styles["place-item__modal-actions"]}
         footer={<Button onClick={closeMapHandler}>Close</Button>}
       >
-        <div className={styles['map-container']}>
+        <div className={styles["map-container"]}>
           <Map center={coordinates} zoom={16} />
         </div>
+      </Modal>
+      <Modal
+      show={showConfirmModal}
+      onCancel={cancelDeleteWarningHandler}
+        header="are you sure?"
+        footerClass="place-item__modal-actions"
+        footer={
+          <>
+            <Button inverse onClick={cancelDeleteWarningHandler}>Cancel</Button>
+            <Button danger onClick={confirmDeleteHandler}>Delete</Button>
+          </>
+        }
+      >
+        <p>delete?</p>
       </Modal>
       <li className={styles["place-item"]}>
         <Card className={styles["place-item__content"]}>
@@ -48,9 +74,11 @@ function PlaceItem({
             <p>{description}</p>
           </div>
           <div className={styles["place-item__actions"]}>
-            <Button inverse onClick={openMapHandler}>View on Map</Button>
+            <Button inverse onClick={openMapHandler}>
+              View on Map
+            </Button>
             <Button to={`/places/${id}`}>Edit</Button>
-            <Button danger>Delete</Button>
+            <Button danger onClick={showDeleteWarningHandler}>Delete</Button>
           </div>
         </Card>
       </li>
