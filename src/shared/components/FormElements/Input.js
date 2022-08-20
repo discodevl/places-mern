@@ -10,11 +10,11 @@ function inputReducer(state, action) {
         value: action.val,
         isValid: validate(action.val, action.validators),
       };
-    case 'TOUCH': {
-        return {
-            ...state,
-            isTouched: true
-        }
+    case "TOUCH": {
+      return {
+        ...state,
+        isTouched: true,
+      };
     }
     default:
       return state;
@@ -30,24 +30,26 @@ function Input({
   rows,
   errorText,
   validators,
-  onInput
+  onInput,
+  initialValue,
+  initialValid,
 }) {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: "",
+    value: initialValue || "",
     isTouched: false,
-    isValid: false,
+    isValid: initialValid || false,
   });
 
   useEffect(() => {
-    onInput(id, inputState.value, inputState.isValid)
-  }, [id, onInput, inputState])
+    onInput(id, inputState.value, inputState.isValid);
+  }, [id, onInput, inputState]);
 
   function changeHandler(e) {
     dispatch({ type: "CHANGE", val: e.target.value, validators: validators });
   }
 
   function touchHandler() {
-    dispatch({type: 'TOUCH'})
+    dispatch({ type: "TOUCH" });
   }
 
   const elementInput =
