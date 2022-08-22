@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Card from "../../shared/components/UIElements/Card";
 import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
 import styles from "./PlaceItem.module.css";
 import Map from "../../shared/components/UIElements/Map";
+import { AuthContext } from "../../context/auth-context";
 
 function PlaceItem({
   id,
@@ -14,6 +15,7 @@ function PlaceItem({
   creatorId,
   coordinates,
 }) {
+  const authCtx = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -25,14 +27,14 @@ function PlaceItem({
   }
 
   function showDeleteWarningHandler() {
-    setShowConfirmModal(true)
+    setShowConfirmModal(true);
   }
   function cancelDeleteWarningHandler() {
-    setShowConfirmModal(false)
+    setShowConfirmModal(false);
   }
   function confirmDeleteHandler() {
-    setShowConfirmModal(false)
-    console.log('delete')
+    setShowConfirmModal(false);
+    console.log("delete");
   }
 
   return (
@@ -50,14 +52,18 @@ function PlaceItem({
         </div>
       </Modal>
       <Modal
-      show={showConfirmModal}
-      onCancel={cancelDeleteWarningHandler}
+        show={showConfirmModal}
+        onCancel={cancelDeleteWarningHandler}
         header="are you sure?"
         footerClass="place-item__modal-actions"
         footer={
           <>
-            <Button inverse onClick={cancelDeleteWarningHandler}>Cancel</Button>
-            <Button danger onClick={confirmDeleteHandler}>Delete</Button>
+            <Button inverse onClick={cancelDeleteWarningHandler}>
+              Cancel
+            </Button>
+            <Button danger onClick={confirmDeleteHandler}>
+              Delete
+            </Button>
           </>
         }
       >
@@ -77,8 +83,10 @@ function PlaceItem({
             <Button inverse onClick={openMapHandler}>
               View on Map
             </Button>
-            <Button to={`/places/${id}`}>Edit</Button>
-            <Button danger onClick={showDeleteWarningHandler}>Delete</Button>
+            {authCtx.isLoggedIn && <Button to={`/places/${id}`}>Edit</Button>}
+            {authCtx.isLoggedIn && <Button danger onClick={showDeleteWarningHandler}>
+              Delete
+            </Button>}
           </div>
         </Card>
       </li>

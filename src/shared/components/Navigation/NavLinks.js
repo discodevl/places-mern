@@ -11,7 +11,7 @@ function NavLinks() {
         <NavLink to="/" exact>ALL USERS</NavLink>
       </li>
       {authCtx.isLoggedIn && <li>
-        <NavLink to="/u1/place">my place</NavLink>
+        <NavLink to="/u1/places">my place</NavLink>
       </li>}
       {authCtx.isLoggedIn &&<li>
         <NavLink to="/places/new">add place</NavLink>
@@ -19,6 +19,9 @@ function NavLinks() {
       {!authCtx.isLoggedIn && <li>
         <NavLink to="/auth">auth</NavLink>
       </li>}
+      {authCtx.isLoggedIn && <li>
+        <button onClick={authCtx.logout}>Logout</button>
+        </li>}
     </ul>
   );
 }
